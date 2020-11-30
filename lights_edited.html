@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>lights_edited</title>
+	</head>
+	<body>
+
+  <script type="module">
+    import * as THREE from './js/build/three.module.js'
+    import { OrbitControls } from './js/examples/jsm/controls/OrbitControls.js'
+
+
+    let wireframe = false;
+
+    //first create a "world" or "scene" to hold the data you will render to the screen (where the data is 3D geometry)      
+    const scene = new THREE.Scene();
+
+    //define a camera to look into the 3D world
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+
+    //we are going to place our 3D meshes at the center of the world's coordinate system, 
+    //  so we move the camera so that it can see them 
+    camera.position.z = 5;
+
+    //tell Three.js to render our geometry using the GPU
+    const renderer = new THREE.WebGLRenderer();
+
+    //make the canvas take up the entire browser window
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    //once the renderer and camera are created, 
+    // we can define how the camera can be moved
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+
+    //a 3D object consists of:
+    // some POINTS (called "geometry") that define the object
+    // a MATERIAL that defines how the faces of the geometry are rendered
+    const geometry1 = new THREE.BoxGeometry();
+    const material1 = new THREE.MeshPhongMaterial();
+
+    //you put these together by making a MESH
+    const cube1 = new THREE.Mesh(geometry1, material1);
+    const cube2 = new THREE.Mesh(geometry1, material1);
+    const cube3 = new THREE.Mesh(geometry1, material1);
+    const cube4 = new THREE.Mesh(geometry1, material1);
+
+    //and you then add the mesh to the scene so that it gets rendered
+    scene.add(cube1);
+    scene.add(cube2);
+    scene.add(cube3);
+    scene.add(cube4);
+
+    //setting positions
+    cube1.position.set( 0.675, -0.5, 0 );
+    cube2.position.set( -0.6, -0.5, 0.725 );
+    cube3.position.set( -0.525, -0.5, -0.7 );
+    cube4.position.set( -0.15, 0.5, -0.15 );
+
+    //setting rotations
+    cube1.rotation.set( 0, 0.41251555, 0 );
+    cube2.rotation.set( 0, -0.35685525485, 0 );
+    cube3.rotation.set( 0, 0.065895254975, 0 );
+    cube4.rotation.set( 0, 0.25383894108, 0 );
+    
+    const light1 = new THREE.PointLight( 0xFFBE75 );
+    light1.position.set( 0, 50, 0 );
+    scene.add( light1 );
+
+    const light1a = new THREE.PointLight( 0xFFBE75 );
+    light1a.position.set( 0, -50, 0 );
+    scene.add( light1a );
+
+    const light2 = new THREE.PointLight( 0xC4915A );
+    light2.position.set( 50, 0, 0 );
+    scene.add( light2 );
+
+    const light2a = new THREE.PointLight( 0xC4915A );
+    light2a.position.set( -50, 0, 0 );
+    scene.add( light2a );
+
+    const light3 = new THREE.PointLight( 0x996F46 );
+    light3.position.set( 0, 0, 50 );
+    scene.add( light3 );
+
+    const light3a = new THREE.PointLight( 0x996F46 );
+    light3a.position.set( 0, 0, -50 );
+    scene.add( light3a );
+
+
+    const white_pointlight = new THREE.PointLight( 0xffffff );
+    white_pointlight.position.set( 0, 0, 0 );
+    //scene.add( white_pointlight );
+
+    const ambientLight = new THREE.AmbientLight( 0x202020 ); // soft white light
+    //scene.add( ambientLight );
+
+
+    let light_dx = 0.1;
+
+    const animate = function () {
+      requestAnimationFrame(animate);
+
+      controls.update();
+
+//      rotateObject(cube, 0.02, 0.01);
+//      rotateObject(sphere, 0.01, 0.01);
+//      rotateObject(torus, 0.01, -0.02);
+//      rotateObject(knot, -0.02, 0.01);
+//      rotateObject(dodecahedron, -0.01, 0.01);
+
+      white_pointlight.position.x += light_dx;
+
+      if (white_pointlight.position.x > 10) {
+        light_dx = -0.1;
+      } else if (white_pointlight.position.x < -10) {
+        light_dx = 0.1; 
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    function rotateObject(o, dx, dy) {
+      o.rotation.x += dx;
+      o.rotation.y += dy;
+    }
+
+  </script>
+
+	<p style="position: absolute; margin-top: 40px; margin-left: 50px; margin-bottom: -50px; font-size: 75px; font-family: helvetica; font-weight: bold; color: #FFCD51;">Wooden Crates!</p>
+	<p style="position: absolute; margin-top: 130px; margin-left: 290px; font-size: 20px; font-family: helvetica; font-weight: bold; color: #997A32;">(in 1993)</p>
+
+  </body>
+  
+  </html>
